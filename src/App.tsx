@@ -1,26 +1,37 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import SuccessContainer from "./containers/SuccesContainer";
+import {Route, Routes, useNavigate} from "react-router-dom";
+import ProtectedRoute from './routes/components/ProtectedRoute';
+import api from './services/api/api';
+
+const loading = (
+    <SuccessContainer/>
+);
+
+// components
+const Layout = React.lazy(() => import('./components/Layout/Layout'));
+
+// pages
+const Login = React.lazy(() => import('./pages/Login/Login'));
+const NotFound = React.lazy(() => import('./pages/NotFound/NotFound'));
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const history: any = useNavigate();
+    api.subscribe(history);
+
+    return (
+        <React.Suspense fallback={loading}>
+            <Routes>
+                <Route path="/login" element={<Login/>}/>
+                <Route path='/' element={<ProtectedRoute/>}>
+                    <Route path='/' element={<Layout/>}/>
+                </Route>
+                <Route path="*" element={<NotFound/>}/>
+            </Routes>
+        </React.Suspense>
+    );
 }
 
 export default App;
