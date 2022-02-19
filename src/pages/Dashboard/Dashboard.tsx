@@ -1,10 +1,11 @@
 import React from 'react';
+import {PageWrapper} from "../../containers/StyledContainers";
 
 const Dashboard = () => {
     return (
-        <div>
-            <h1>Dashboard</h1>
-        </div>
+        <PageWrapper>
+            <h1>ApexCharts</h1>
+        </PageWrapper>
     );
 };
 

@@ -3,8 +3,9 @@ import {Layout, Breadcrumb} from 'antd';
 import TheSidebar from "./components/Sidebar/TheSidebar";
 import TheFooter from "./components/Footer/TheFooter";
 import styled from "styled-components";
-
-const {Header, Content} = Layout;
+import StyledBreadcrumb from "../../containers/StyledBreadcrumb";
+import TheContent from "./components/Content/TheContent";
+import TheHeader from "./components/Header/TheHeader";
 
 const TheLayout = () => {
 
@@ -19,18 +20,9 @@ const TheLayout = () => {
             <Layout style={{minHeight: '100vh'}}>
                 <TheSidebar collapsed={collapsed} onCollapse={onCollapse}/>
                 <Layout className="site-layout">
-                    <Header className="" style={{padding: 0, backgroundColor: "white"}}>
-                        <div className="">La havla vala quvvata illa billah</div>
-                    </Header>
-                    <Content style={{margin: '0 16px'}}>
-                        <Breadcrumb style={{margin: '16px 0'}}>
-                            <Breadcrumb.Item>User</Breadcrumb.Item>
-                            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-                        </Breadcrumb>
-                        <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
-                            Bill is a cat.
-                        </div>
-                    </Content>
+                    <TheHeader/>
+                    <StyledBreadcrumb/>
+                    <TheContent/>
                     <TheFooter/>
                 </Layout>
             </Layout>
@@ -38,7 +30,7 @@ const TheLayout = () => {
     );
 };
 
-export default TheLayout;
+export default React.memo(TheLayout);
 
 const LayoutWrapper = styled.div`
   #components-layout-demo-side .logo {

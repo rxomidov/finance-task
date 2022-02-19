@@ -1,25 +1,38 @@
 import React from 'react';
 import {Layout, Menu} from "antd";
 import {
-    DesktopOutlined, PieChartOutlined, FileOutlined, TeamOutlined, UserOutlined,
+     PieChartOutlined, FileOutlined, TeamOutlined, UserOutlined,
 } from '@ant-design/icons';
+import {Link} from "react-router-dom";
+import {BankOutlined} from "@ant-design/icons/lib";
+import logoMini from "../../../../assets/logoMini.png";
+import logo from "../../../../assets/logo.png";
+import styled from "styled-components";
 
 const {SubMenu} = Menu;
 const {Sider} = Layout;
 
 const TheSidebar = ({collapsed, onCollapse}: any) => {
     return (
-        <div>
+        <Wrapper style={{backgroundColor: "#001529"}}>
             <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-                <div className="logo text-light">
-                    MOLIYA
+                <div className="logo p-2">
+                    {collapsed ? (
+                        <img src={logoMini} alt="logo" height={36}/>
+                    ) : (
+                        <img src={logoMini} alt="logo" height={36}/>
+                    )}
                 </div>
                 <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                     <Menu.Item key="1" icon={<PieChartOutlined/>}>
-                        Option 1
+                        <Link to="/dashboard">
+                            Dashboard
+                        </Link>
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<DesktopOutlined/>}>
-                        Option 2
+                    <Menu.Item key="2" icon={<BankOutlined/>}>
+                        <Link to="/bank">
+                            Bank
+                        </Link>
                     </Menu.Item>
                     <SubMenu key="sub1" icon={<UserOutlined/>} title="User">
                         <Menu.Item key="3">Tom</Menu.Item>
@@ -35,8 +48,17 @@ const TheSidebar = ({collapsed, onCollapse}: any) => {
                     </Menu.Item>
                 </Menu>
             </Sider>
-        </div>
+        </Wrapper>
     );
 };
 
 export default TheSidebar;
+
+const Wrapper = styled.div`
+  .logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 56px;
+  }
+`;

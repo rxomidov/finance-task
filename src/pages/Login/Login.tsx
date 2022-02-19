@@ -1,23 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Controller, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {Link, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {Link, useHistory} from "react-router-dom";
+import {DefaultRootState, useDispatch, useSelector} from "react-redux";
 import styled from 'styled-components';
-import {Input} from "antd";
+import {Button, Form, Input} from "antd";
 import {EyeInvisibleOutlined, EyeTwoTone} from "@ant-design/icons/lib";
+import bgImg from "../../assets/finance-bg.jpg"
 import {loginStart} from "../../services/actions/loginActions";
+import logo from "../../assets/logoMini.png";
 
 const schema = yup.object().shape({
-    login: yup.string().required().default("This field is required!"),
+    username: yup.string().required().default("This field is required!"),
     password: yup.string().required().default("This field is required!"),
 });
 
 const Login = () => {
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const history = useHistory();
 
     const methods = useForm({
         resolver: yupResolver(schema),
@@ -28,38 +30,41 @@ const Login = () => {
     const onSubmit = (data: object) => {
         console.log(data);
         dispatch(loginStart(data));
+        resetForm();
     };
 
     const resetForm = () => {
         reset({
-            login: null,
+            username: null,
             password: null,
         });
     };
 
+    let token = localStorage.getItem("token");
+    const loginState = useSelector((state: any) => state.login.loginSuccess);
+    const loading = useSelector((state: any) => state.login.loginBegin);
+
+    useEffect(() => {
+        if (token || loginState) {
+            history.push("/");
+        }
+    }, [token, loginState]);
+
     return (
         <LoginWrapper>
             <div className="container-flui">
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="login-left">
-                            <div className="text-center" style={{marginTop: "20%", marginBottom: "10%"}}>
-                                <h3>Logo</h3>
-                                <h3 className="mt-4">Sign In</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
+                <div className="row g-0">
+                    <div className="col-lg-5">
                         <div className="login-form">
                             <div style={{width: 400}}>
                                 <div className="text-center">
-                                    <h3>logo</h3>
+                                    <h3>Welcome</h3>
                                 </div>
-                                <form onSubmit={handleSubmit(onSubmit)}>
+                                <Form autoComplete="off" onFinish={handleSubmit(onSubmit)}>
                                     <div>
-                                        <label className="my-1">Login</label>
+                                        <label className="my-1">Username</label>
                                         <Controller
-                                            name="login"
+                                            name="username"
                                             rules={{required: true}}
                                             render={({
                                                          field: {onChange, onBlur, value, ref},
@@ -68,13 +73,14 @@ const Login = () => {
                                                      }) => (
                                                 <Input
                                                     onChange={onChange} onBlur={onBlur} value={value}
-                                                    placeholder="Enter your login here"
+                                                    placeholder="Enter your username here"
                                                 />
                                             )}
                                             control={control}
                                             defaultValue=""
                                         />
-                                        {errors.login && <div className="text-danger float-end">login is required</div>}
+                                        {errors.username &&
+                                        <div className="text-danger float-end">username is required</div>}
                                     </div>
                                     <div className="mt-2">
                                         <label className="my-1">Password</label>
@@ -89,23 +95,30 @@ const Login = () => {
                                                 <Input.Password
                                                     onChange={onChange} onBlur={onBlur} value={value}
                                                     placeholder="Enter your password here"
-                                                    iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                                                    iconRender={visible => (visible ? <EyeTwoTone/> :
+                                                        <EyeInvisibleOutlined/>)}
                                                 />
                                             )}
                                             control={control}
                                             defaultValue=""
                                         />
-                                        {errors.password && <div className="text-danger float-end">password is required</div>}
+                                        {errors.password &&
+                                        <div className="text-danger float-end">password is required</div>}
                                     </div>
                                     <div className="mt-2">
-                                        <div className="text-center">
-                                            <Link to="/register" className="sign-up">Register</Link>
-                                        </div>
-                                        <div className="text-center mt-4">
-                                            <button type="submit" className="text-uppercase sign-in">Sign In</button>
+                                        <div className="text-end mt-5">
+                                            <Button type="primary" htmlType="submit" loading={loading} className="text-uppercase">Login</Button>
                                         </div>
                                     </div>
-                                </form>
+                                </Form>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-7">
+                        <div className="login-right d-none d-lg-flex">
+                            <div className="text-center">
+                                <img src={logo} alt="logo" height={64}/>
+                                <h3 className="mt-4">Login Page</h3>
                             </div>
                         </div>
                     </div>
@@ -118,18 +131,19 @@ const Login = () => {
 export default Login;
 
 const LoginWrapper = styled.div`
-  background: var(--background-color);
-  width: 100%;
-  height: 100%;
-  padding: 2rem;
-  .login-left{
+  background: linear-gradient( var(--background-color), var(--background-color) ), url(${bgImg}) center center no-repeat;
+  background-size:cover;
+  width: 100vw;
+  height: 100vh;
+  .login-right{
     color: #ffffff;
-    display:flex;
     justify-content: center;
+    align-items: center;
+    height: 100vh;
     h3{
-      font-weight: 700;
+      font-weight: 500;
       color: #ffffff;
-      font-size: 48px;
+      font-size: 42px;
       line-height: 30px;
       text-transform:uppercase;
     }
@@ -138,20 +152,16 @@ const LoginWrapper = styled.div`
     background: #ffffff;
     padding: 2rem;
     box-shadow: 3.75215px 3.75215px 18.7607px rgba(0, 0, 0, 0.25);
-    border-radius: 25px;
-    height: calc(100vh - 4rem);
+    height: 100vh;
     display:flex;
     align-items: center;
     justify-content:center;
     h3{
-      font-weight: 700;
-      font-size: 26px;
+      font-weight: 500;
+      font-size: 22px;
       line-height: 30px;
       text-transform:uppercase;
     }
-  }
-  .sign-up{
-    color: var(--text-color);
   }
   .sign-in{
     background: var(--text-color);

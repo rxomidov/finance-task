@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import SuccessContainer from "./containers/SuccesContainer";
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Switch, Route, useHistory} from "react-router-dom";
 import ProtectedRoute from './routes/components/ProtectedRoute';
 import api from './services/api/api';
 
@@ -18,18 +18,16 @@ const NotFound = React.lazy(() => import('./pages/NotFound/NotFound'));
 
 function App() {
 
-    const history: any = useNavigate();
+    const history: any = useHistory();
     api.subscribe(history);
 
     return (
         <React.Suspense fallback={loading}>
-            <Routes>
-                <Route path="/login" element={<Login/>}/>
-                <Route path='/' element={<ProtectedRoute/>}>
-                    <Route path='/' element={<Layout/>}/>
-                </Route>
-                <Route path="*" element={<NotFound/>}/>
-            </Routes>
+            <Switch>
+                <Route path="/login" component={Login}/>
+                <ProtectedRoute path="/" name="Home" component={Layout}/>
+                <Route path="*" component={NotFound}/>
+            </Switch>
         </React.Suspense>
     );
 }

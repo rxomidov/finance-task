@@ -8,7 +8,7 @@ import { LOGIN_START } from "../constants/constants";
 
 export function* postLoginGetCode({ payload }) {
     try {
-        const response = yield api.request.post("/login", payload);
+        const response = yield api.request.post("/Account/GenerateToken", payload);
         yield put(loginSuccess(response.data.token));
         localStorage.setItem("token", response.data.token);
     } catch (e) {

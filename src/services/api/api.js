@@ -20,21 +20,21 @@ const subscribe = (history = null) => {
     request.interceptors.response.use(
         (config) => config,
         (error) => {
-            if (error?.response?.status === 401) {
+            if (error?.response?.status === (400 || 401)) {
                 localStorage.removeItem("token");
-                history.push("/");
+                history.push("/login");
                 ShowNotification(
                     "error",
-                    "Login yoki parol xato!",
-                    "Iltimos qaytadan urining!"
+                    `${error.response.statusText}`,
+                    `${error.response.data.error}`
                 );
             }
 
-            if (error.response?.data) {
-                console.log(error);
-            }
+            // if (error.response?.data) {
+            //     console.log(error.response);
+            // }
 
-            throw error;
+            // throw error;
         }
     );
 };
