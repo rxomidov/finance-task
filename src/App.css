@@ -18,3 +18,8 @@ body{
 
   --main-transition: 0.3s ease-in-out;
 }
+
+.ant-btn-primary{
+  display: flex;
+  align-items: center;
+}

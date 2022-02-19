@@ -64,7 +64,7 @@ const TheHeader = () => {
                         </ul>
                     </nav>
                 </div>
-                <div className="dropdown-group d-none d-md-flex">
+                <div className="dropdown-group">
                     <Dropdown.Button overlay={menu} placement="bottomRight" icon={<UserOutlined/>}>
                         Username
                     </Dropdown.Button>

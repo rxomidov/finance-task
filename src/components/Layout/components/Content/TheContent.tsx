@@ -47,5 +47,5 @@ export default React.memo(TheContent);
 
 const Wrapper = styled.div`
   margin-bottom: 1rem;
-  height: 70vh;
+  min-height: 70vh;
 `;
