@@ -14,5 +14,6 @@ export const BANK_LIST_PARAMS = "BANK_LIST_PARAMS";
 
 //Bank Info actions
 export const BANK_INFO_START = "BANK_INFO_START";
+export const BANK_INFO_UPDATE = "BANK_INFO_UPDATE";
 export const BANK_INFO_SUCCESS = "BANK_INFO_SUCCESS";
 export const BANK_INFO_FAIL = "BANK_INFO_FAIL";

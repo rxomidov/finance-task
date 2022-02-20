@@ -16,7 +16,7 @@ export default SuccessContainer;
 
 const Wrapper = styled.div`
   position:absolute;
-  border-radius: 1rem;
+  //border-radius: 1rem;
   top: 0;
   right: 0;
   z-index: 99;

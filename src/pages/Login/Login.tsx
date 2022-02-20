@@ -3,9 +3,9 @@ import {Controller, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {Link, useHistory} from "react-router-dom";
-import {DefaultRootState, useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import styled from 'styled-components';
-import {Button, Form, Input} from "antd";
+import {Button, Input} from "antd";
 import {EyeInvisibleOutlined, EyeTwoTone} from "@ant-design/icons/lib";
 import bgImg from "../../assets/finance-bg.jpg"
 import {loginStart} from "../../services/actions/loginActions";
@@ -60,7 +60,7 @@ const Login = () => {
                                 <div className="text-center">
                                     <h3>Welcome</h3>
                                 </div>
-                                <Form autoComplete="off" onFinish={handleSubmit(onSubmit)}>
+                                <form onSubmit={handleSubmit(onSubmit)}>
                                     <div>
                                         <label className="my-1">Username</label>
                                         <Controller
@@ -110,7 +110,7 @@ const Login = () => {
                                             <Button type="primary" htmlType="submit" loading={loading} className="text-uppercase">Login</Button>
                                         </div>
                                     </div>
-                                </Form>
+                                </form>
                             </div>
                         </div>
                     </div>

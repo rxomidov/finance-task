@@ -11,7 +11,9 @@ import {useDispatch, useSelector} from "react-redux";
 import EmptyList from "../../../containers/EmptyList";
 import SuccessContainer from "../../../containers/SuccesContainer";
 import {Button} from "antd";
-import MessageContainer from "../../../containers/MessageContainer";
+import ErrorContainer from "../../../containers/ErrorContainer";
+import { ReloadOutlined } from '@ant-design/icons';
+import DeleteModal from "./DeleteModal";
 
 interface ListBanks {
     listBanks: {
@@ -28,6 +30,7 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
 
     const loading = useSelector((state: any) => state.bankList?.bankListBegin);
     const success = useSelector((state: any) => state.bankList?.bankListSuccess);
+    let fail = useSelector((state: any) => state.bankList.bankListFail);
     const bankListFailData = useSelector((state: any) => state.bankList?.bankListFailData);
 
     const [direction, setDirection] = useState<any>(null);
@@ -83,7 +86,7 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
     const toggleInfo = (id: number, result?: number) => {
         // dispatch(getArticlesInfoStartAct({id, result}));
         history.push({
-            pathname:`/bank/${id}`,
+            pathname: `/bank/${id}`,
             state: "Bank information",
         })
     };
@@ -115,60 +118,56 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
                     </div>
                 </div>
                 <div style={{minHeight: "15rem"}}>
-                    {count === 0 ? (
+                    {count === 0 && (
                         <EmptyList name="Banks"/>
+                    )}
+                    {loading ? (
+                        <SuccessContainer/>
                     ) : (
                         <>
-                            {loading ? (
-                                <SuccessContainer/>
-                            ) : (
-                                <>
-                                    {listBanks?.map((list: any, idx: number) => {
-                                        return (
-                                            <div key={idx} className="row-parent">
-                                                <div className="row gx-0" onClick={() => toggleInfo(list.id)}>
-                                                    <div className="listIcon" onClick={() => toggleInfo(list.id)}>
-                                                        <div className="list-rn">{list.id}</div>
-                                                    </div>
-                                                    <div className="listIcon" onClick={() => toggleInfo(list.id)}>
-                                                        <div className="list-id">{list.code}</div>
-                                                    </div>
-                                                    <div className="population">
-                                                        <Link to="/" className="link-user">
-                                                            {list.bankname}
-                                                        </Link>
-                                                    </div>
-                                                    <Status status={list?.status}/>
-                                                    <div className="name d-none d-md-block">
-                                                        <div className="d-flex justify-content-end">
-                                                            <Button
-                                                                className="me-2"
-                                                                icon={<EditIcon fill={"dodgerblue"}/>}
-                                                                onClick={() => toggleInfo(list.id)}
-                                                            />
-                                                            <Button
-                                                                className="danger"
-                                                                icon={<TrashIcon fill={"rgba(255,0,0,0.6)"}/>}
-                                                            />
-                                                        </div>
-                                                    </div>
+                            {listBanks?.map((list: any, idx: number) => {
+                                return (
+                                    <div key={idx} className="row-parent">
+                                        <div className="row gx-0">
+                                            <div className="listIcon" onClick={() => toggleInfo(list.id)}>
+                                                <div className="list-rn">{list.id}</div>
+                                            </div>
+                                            <div className="listIcon" onClick={() => toggleInfo(list.id)}>
+                                                <div className="list-id">{list.code}</div>
+                                            </div>
+                                            <div className="population">
+                                                <Link to="/" className="link-user">
+                                                    {list.bankname}
+                                                </Link>
+                                            </div>
+                                            <Status status={list?.status}/>
+                                            <div className="name d-none d-md-block">
+                                                <div className="d-flex justify-content-end">
+                                                    <Button
+                                                        className="me-2"
+                                                        icon={<EditIcon fill={"dodgerblue"}/>}
+                                                        onClick={() => toggleInfo(list.id)}
+                                                    />
+                                                    <DeleteModal id={list.id}/>
                                                 </div>
                                             </div>
-                                        )
-                                    })}
-                                    {/*{!success && (*/}
-                                    {/*    <MessageContainer*/}
-                                    {/*        open={true}*/}
-                                    {/*        message={bankListFailData?.statusText + " " + bankListFailData?.status + "!"}*/}
-                                    {/*        messageText={bankListFailData?.data}*/}
-                                    {/*        status={bankListFailData?.status}*/}
-                                    {/*        errorType="bankList"*/}
-                                    {/*        type="error"*/}
-                                    {/*    />*/}
-                                    {/*)}*/}
-                                </>
-                            )}
+                                        </div>
+                                    </div>
+                                )
+                            })}
                         </>
+                    )}
+                    {fail && (
+                        <ErrorContainer
+                            message={bankListFailData?.statusText + " " + bankListFailData?.status + "!"}
+                            messageText={bankListFailData?.data.toString()}
+                        >
+                            <Button
+                                type="default" icon={<ReloadOutlined />}
+                            >
+                                Refresh
+                            </Button>
+                        </ErrorContainer>
                     )}
                 </div>
             </div>

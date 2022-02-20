@@ -23,6 +23,7 @@ const Dashboard = () => {
         <PageWrapper>
             <h1>refresh token</h1>
             <h1>search issue</h1>
+            <h1>bank update refactor</h1>
             <div className="row">
                 <div className="col-md-6">
                     <h4>Donut Chart</h4>

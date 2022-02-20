@@ -6,13 +6,16 @@ import {PageWrapper} from "../../containers/StyledContainers";
 import ListBanks from "./Components/ListBanks";
 import {useDispatch, useSelector} from "react-redux";
 import {getBankListStartAct, setFilterParams} from "../../services/actions/bankListActions";
-import {Input, Pagination} from 'antd';
+import {Button, Input, Pagination} from 'antd';
+import {DoubleLeftOutlined, FileAddOutlined} from "@ant-design/icons/lib";
+import { useHistory } from 'react-router-dom';
 
 const {Search} = Input;
 
 const Bank = () => {
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     let bankListParams = useSelector((state: any) => state.bankList.paramsData);
     let bankListFromApi = useSelector((state: any) => state.bankList.bankListSuccessData);
@@ -56,7 +59,15 @@ const Bank = () => {
                                 placeholder="Search bank..."
                                 loading={false}
                                 enterButton
+                                className="me-2"
                             />
+                            <Button
+                                onClick={()=> history.push("bank/add")}
+                                type="primary" htmlType="submit" loading={false}
+                                className="text-uppercase" icon={<FileAddOutlined />}
+                            >
+                                Add new
+                            </Button>
                         </div>
                     </div>
                 </div>

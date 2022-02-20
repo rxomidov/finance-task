@@ -1,15 +1,16 @@
 import {
     BANK_INFO_START,
+    BANK_INFO_UPDATE,
     BANK_INFO_SUCCESS,
     BANK_INFO_FAIL,
 } from "../constants/constants";
 
 const initialState = {
-    bankInfoInfoBegin: false,
-    bankInfoInfoSuccess: false,
-    bankInfoInfoSuccessData: [],
-    bankInfoInfoFailData: [],
-    bankInfoInfoFail: false,
+    bankInfoBegin: false,
+    bankInfoSuccess: false,
+    bankInfoSuccessData: [],
+    bankInfoFailData: [],
+    bankInfoFail: false,
 };
 
 const bankInfoInfoReducer = (state = initialState, action) => {
@@ -18,24 +19,24 @@ const bankInfoInfoReducer = (state = initialState, action) => {
         case BANK_INFO_START:
             return {
                 ...state,
-                bankInfoInfoBegin: true,
-                bankInfoInfoSuccessData: [],
+                bankInfoBegin: true,
+                bankInfoSuccessData: [],
             };
         case BANK_INFO_SUCCESS:
             return {
                 ...state,
-                bankInfoInfoBegin: false,
-                bankInfoInfoSuccess: true,
-                bankInfoInfoSuccessData: action.payload,
-                bankInfoInfoFail: false,
+                bankInfoBegin: false,
+                bankInfoSuccess: true,
+                bankInfoSuccessData: action.payload,
+                bankInfoFail: false,
             };
         case BANK_INFO_FAIL:
             return {
                 ...state,
-                bankInfoInfoBegin: false,
-                bankInfoInfoSuccess: false,
-                bankInfoInfoFailData: action.payload,
-                bankInfoInfoFail: true,
+                bankInfoBegin: false,
+                bankInfoSuccess: false,
+                bankInfoFailData: action.payload,
+                bankInfoFail: true,
             };
         default:
             return state;

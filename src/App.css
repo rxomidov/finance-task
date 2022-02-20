@@ -19,7 +19,14 @@ body{
   --main-transition: 0.3s ease-in-out;
 }
 
-.ant-btn-primary{
+.ant-btn-primary, .ant-btn-default{
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+.ant-modal-footer {
+  display: flex;
+}
+.ant-modal-footer{
+  justify-content: end;
 }

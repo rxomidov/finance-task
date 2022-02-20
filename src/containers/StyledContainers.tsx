@@ -40,6 +40,9 @@ export const PageWrapper = styled.div`
 
 export const ListWrapper = styled.div`
   //padding: 1rem;
+  .ant-btn {
+    border: none;
+  }
   .divider{
     border-top: 1px dashed rgba(220,220,220,0.75);
     margin: 3px 0;
