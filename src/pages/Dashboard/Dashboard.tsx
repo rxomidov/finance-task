@@ -21,9 +21,11 @@ const Dashboard = () => {
 
     return (
         <PageWrapper>
-            <h1>refresh token</h1>
-            <h1>search issue</h1>
-            <h1>bank update refactor</h1>
+            <h3>refresh token</h3>
+            <h3>search issue</h3>
+            <h3>adding typescript</h3>
+            <h3>@reduxjs/toolkit</h3>
+            <h3>redux-persist</h3>
             <div className="row">
                 <div className="col-md-6">
                     <h4>Donut Chart</h4>

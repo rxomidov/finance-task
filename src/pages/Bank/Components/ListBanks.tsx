@@ -12,8 +12,9 @@ import EmptyList from "../../../containers/EmptyList";
 import SuccessContainer from "../../../containers/SuccesContainer";
 import {Button} from "antd";
 import ErrorContainer from "../../../containers/ErrorContainer";
-import { ReloadOutlined } from '@ant-design/icons';
+import {ReloadOutlined} from '@ant-design/icons';
 import DeleteModal from "./DeleteModal";
+import {setFilterParams} from "../../../services/actions/bankListActions";
 
 interface ListBanks {
     listBanks: {
@@ -29,11 +30,12 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
     const dispatch = useDispatch();
 
     const loading = useSelector((state: any) => state.bankList?.bankListBegin);
-    const success = useSelector((state: any) => state.bankList?.bankListSuccess);
     let fail = useSelector((state: any) => state.bankList.bankListFail);
     const bankListFailData = useSelector((state: any) => state.bankList?.bankListFailData);
 
-    const [direction, setDirection] = useState<any>(null);
+    const [directionId, setDirectionId] = useState<any>(null);
+    const [directionCode, setDirectionCode] = useState<any>(null);
+    const [directionName, setDirectionName] = useState<any>(null);
 
     const Status = ({status}: any) => {
         return (
@@ -45,7 +47,7 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
         )
     };
 
-    const SortArrow = () => {
+    const SortArrow = ({direction}: any) => {
         if (!direction) {
             return <span className="heading_arrow">
                     <FilterIcon fill="#3699ff"/>
@@ -69,18 +71,56 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
         return null;
     };
 
-    const switchDirection = () => {
-        if (!direction) {
-            setDirection("desc");
-        } else if (direction === "desc") {
-            setDirection("asc")
+    const switchDirectionId = () => {
+        if (!directionId) {
+            setDirectionId("desc");
+        } else if (directionId === "desc") {
+            setDirectionId("asc")
         } else {
-            setDirection(null)
+            setDirectionId(null)
         }
+    };
+    const switchDirectionCode = () => {
+        if (!directionCode) {
+            setDirectionCode("desc");
+        } else if (directionCode === "desc") {
+            setDirectionCode("asc")
+        } else {
+            setDirectionCode(null)
+        }
+    };
+    const switchDirectionName = () => {
+        if (!directionName) {
+            setDirectionName("desc");
+        } else if (directionName === "desc") {
+            setDirectionName("asc")
+        } else {
+            setDirectionName(null)
+        }
+    };
 
-        console.log(direction)
-
-        // dispatch(setFilterParams({Sort_Direction: direction}));
+    const setValueAndDirection = (value: any) => {
+        if (value === "id") {
+            switchDirectionId();
+            dispatch(setFilterParams({
+                OrderType: directionId,
+                SortColumn: value,
+            }));
+        }
+        else if (value === "code") {
+            switchDirectionCode();
+            dispatch(setFilterParams({
+                OrderType: directionCode,
+                SortColumn: value,
+            }));
+        }
+        else if (value === "bankname") {
+            switchDirectionName();
+            dispatch(setFilterParams({
+                OrderType: directionName,
+                SortColumn: value,
+            }));
+        }
     };
 
     const toggleInfo = (id: number, result?: number) => {
@@ -95,26 +135,32 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
         <ListWrapper>
             <div className="datatable">
                 <div className="heading sm-hidden">
-                    <div className="heading_listIcon" onClick={switchDirection}>
+                    <div
+                        className="heading_listIcon"
+                        onClick={() => setValueAndDirection("id")}
+                    >
                         <div>#</div>
-                        <SortArrow/>
+                        <SortArrow direction={directionId}/>
                     </div>
-                    <div className="heading_listIcon  d-none d-md-flex" onClick={switchDirection}>
+                    <div
+                        className="heading_listIcon d-none d-md-flex"
+                        onClick={() => setValueAndDirection("code")}
+                    >
                         <div>code</div>
-                        <SortArrow/>
+                        <SortArrow direction={directionCode}/>
                     </div>
-                    <div className="heading_population"
-                        // onClick={setValueAndDirection("first_name")}
+                    <div
+                        className="heading_population"
+                        onClick={() => setValueAndDirection("bankname")}
                     >
                         <div>name</div>
-                        <SortArrow/>
+                        <SortArrow direction={directionName}/>
                     </div>
                     <div className="heading_name">
                         <div>status</div>
                     </div>
-                    <div className="heading_name d-none d-md-flex justify-content-end" onClick={switchDirection}>
+                    <div className="heading_name d-none d-md-flex justify-content-end">
                         <div>actions</div>
-                        <SortArrow/>
                     </div>
                 </div>
                 <div style={{minHeight: "15rem"}}>
@@ -163,7 +209,7 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
                             messageText={bankListFailData?.data.toString()}
                         >
                             <Button
-                                type="default" icon={<ReloadOutlined />}
+                                type="default" icon={<ReloadOutlined/>}
                             >
                                 Refresh
                             </Button>

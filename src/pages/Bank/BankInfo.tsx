@@ -147,10 +147,10 @@ const BankInfo: React.FC = () => {
                     {!fail ? (
                         <form className="p-4" id="updateInfo" onSubmit={handleSubmit(onSubmit)}>
                             <div className="row">
-                                <div className="col-md-4">
+                                <div className="col-lg-2 offset-lg-2">
                                     <label className="my-3">Bank Code</label>
                                 </div>
-                                <div className="col-md-8">
+                                <div className="col-lg-6">
                                     <div className="my-3">
                                         <Controller
                                             name="code"
@@ -173,10 +173,10 @@ const BankInfo: React.FC = () => {
                             </div>
                             <div>
                                 <div className="row">
-                                    <div className="col-md-4">
+                                    <div className="col-lg-2 offset-lg-2">
                                         <label className="my-3">Bank Name</label>
                                     </div>
-                                    <div className="col-md-8">
+                                    <div className="col-lg-6">
                                         <div className="my-3">
                                             <Controller
                                                 name="bankname"
@@ -200,10 +200,10 @@ const BankInfo: React.FC = () => {
                             </div>
                             <div className="mt-2">
                                 <div className="row">
-                                    <div className="col-md-4">
+                                    <div className="col-lg-2 offset-lg-2">
                                         <label className="my-3">Status</label>
                                     </div>
-                                    <div className="col-md-8">
+                                    <div className="col-lg-6">
                                         <div className="my-3">
                                             <Controller
                                                 name="stateid"
@@ -251,4 +251,4 @@ const BankInfo: React.FC = () => {
     );
 };
 
-export default BankInfo;
+export default React.memo(BankInfo);

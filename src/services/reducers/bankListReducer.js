@@ -11,9 +11,11 @@ const initialState = {
     bankListSuccessData: [],
     bankListFailData: [],
     paramsData: {
+        Search: "",
+        SortColumn: "",
+        OrderType: "asc",
         PageNumber: 1,
         PageLimit: 10,
-        OrderType: "asc",
     },
     helpersData: {
         filter: false,
@@ -42,11 +44,11 @@ const bankListReducer = (state = initialState, action) => {
             return {
                 ...state,
                 paramsData: {
-                    PageNumber: action.payload.PageNumber,
-                    PageLimit: action.payload.PageLimit,
-                    OrderType: action.payload.OrderType,
-                    SortColumn: action.payload.SortColumn,
-                    Search: action.payload.Search,
+                    PageNumber: action.payload.PageNumber ? action.payload.PageNumber : state.paramsData.PageNumber,
+                    PageLimit: action.payload.PageLimit ? action.payload.PageLimit : state.paramsData.PageLimit,
+                    OrderType: action.payload.OrderType ? action.payload.OrderType : state.paramsData.OrderType,
+                    SortColumn: action.payload.SortColumn ? action.payload.SortColumn : state.paramsData.SortColumn,
+                    Search: action.payload.Search? action.payload.Search: state.paramsData.Search,
                 },
                 helpersData: {
                     filter: action.payload.filter,
@@ -58,6 +60,7 @@ const bankListReducer = (state = initialState, action) => {
                 ...state,
                 bankListBegin: false,
                 bankListSuccess: false,
+                bankListSuccessData: [],
                 bankListFailData: action.payload,
                 bankListFail: true,
             };

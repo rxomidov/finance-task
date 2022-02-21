@@ -1,26 +1,38 @@
 import React from 'react';
 import {Breadcrumb} from "antd";
-import {HomeOutlined, UserOutlined} from "@ant-design/icons/lib";
 import styled from "styled-components";
-import {useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
+
+const breadcrumbNameMap: any = {
+    '/dashboard': 'Dashboard',
+    '/bank': 'Bank list',
+    '/bank/add': 'Add bank',
+    '/bank/:id': 'Update bank',
+};
 
 const StyledBreadcrumb = () => {
 
     const location = useLocation();
-    // console.log(location);
+    const pathSnippets = location.pathname.split('/').filter(i => i);
+    const extraBreadcrumbItems = pathSnippets.map((_, index) => {
+        const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+        return (
+            <Breadcrumb.Item key={url}>
+                <Link to={url}>{breadcrumbNameMap[url]}</Link>
+            </Breadcrumb.Item>
+        );
+    });
+    const breadcrumbItems = [
+        <Breadcrumb.Item key="home">
+            <Link to="/">
+                Home
+            </Link>
+        </Breadcrumb.Item>,
+    ].concat(extraBreadcrumbItems);
 
     return (
         <BreadcrumbWrapper>
-            <Breadcrumb className="breadcrumb">
-                <Breadcrumb.Item href="" className="breadcrumb-item">
-                    <HomeOutlined />
-                </Breadcrumb.Item>
-                <Breadcrumb.Item href="">
-                    <UserOutlined />
-                    <span>Application List</span>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item>Application</Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb>{breadcrumbItems}</Breadcrumb>
         </BreadcrumbWrapper>
     );
 };
@@ -38,9 +50,7 @@ const BreadcrumbWrapper = styled.div`
   :hover{
     box-shadow: 0 8px 16px 1px rgb(0 0 0 / 1%);
   }
-  .breadcrumb{
-    .breadcrumb-item{
+  .breadcrumb-item{
     
-    }
   }
 `;
