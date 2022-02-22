@@ -10,6 +10,7 @@ import {Button, Input, Pagination} from 'antd';
 import {DoubleLeftOutlined, FileAddOutlined} from "@ant-design/icons/lib";
 import {useHistory} from 'react-router-dom';
 import {AppDispatch, RootState} from "../../services/store";
+import AntDListBanks from "./Components/AntDLIstBanks";
 
 const {Search} = Input;
 
@@ -59,7 +60,7 @@ const Bank = () => {
                                 loading={false}
                                 enterButton
                                 className="me-2"
-                                value={bankListParams?.Search}
+                                defaultValue={bankListParams?.Search}
                             />
                             <Button
                                 onClick={() => history.push("bank/add")}
@@ -78,16 +79,17 @@ const Bank = () => {
                 variants={variants}
                 initial="hidden"
             >
-                <ListBanks listBanks={listBanks} count={count}/>
+                {/*<ListBanks listBanks={listBanks} count={count}/>*/}
+                <AntDListBanks listBanks={listBanks} count={count}/>
             </motion.div>
 
-            <Pagination
-                total={count}
-                showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
-                defaultPageSize={10}
-                defaultCurrent={1}
-                onChange={(page, pageSize) => handlePagination(page, pageSize)}
-            />
+            {/*<Pagination*/}
+            {/*    total={count}*/}
+            {/*    showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}*/}
+            {/*    defaultPageSize={10}*/}
+            {/*    defaultCurrent={1}*/}
+            {/*    onChange={(page, pageSize) => handlePagination(page, pageSize)}*/}
+            {/*/>*/}
 
         </PageWrapper>
     );

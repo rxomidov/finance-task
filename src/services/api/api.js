@@ -1,5 +1,5 @@
 import axios from "axios";
-import  URL from "./config";
+import URL from "./config";
 import {ShowNotification} from "../../containers/ShowNotification";
 
 const request = axios.create({
@@ -20,7 +20,7 @@ const subscribe = (history = null) => {
     request.interceptors.response.use(
         (config) => config,
         (error) => {
-            if (error?.response?.status === (401)) {
+            if (error?.response?.status === (400 || 401)) {
                 localStorage.removeItem("token");
                 history.push("/login");
                 ShowNotification(
@@ -39,4 +39,4 @@ const subscribe = (history = null) => {
     );
 };
 
-export default { request, subscribe };
+export default {request, subscribe};

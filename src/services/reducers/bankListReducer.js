@@ -13,7 +13,7 @@ const initialState = {
     paramsData: {
         Search: "",
         SortColumn: "",
-        OrderType: "asc",
+        OrderType: "",
         PageNumber: 1,
         PageLimit: 10,
     },
@@ -46,7 +46,7 @@ const bankListReducer = (state = initialState, action) => {
                 paramsData: {
                     PageNumber: action.payload.PageNumber ? action.payload.PageNumber : state.paramsData.PageNumber,
                     PageLimit: action.payload.PageLimit ? action.payload.PageLimit : state.paramsData.PageLimit,
-                    OrderType: action.payload.OrderType ? action.payload.OrderType : state.paramsData.OrderType,
+                    OrderType: action.payload.OrderType,
                     SortColumn: action.payload.SortColumn ? action.payload.SortColumn : state.paramsData.SortColumn,
                     Search: action.payload.Search,
                 },

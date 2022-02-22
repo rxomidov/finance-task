@@ -2,6 +2,7 @@ import {takeLatest, put, call, all} from "redux-saga/effects";
 import api from "../api/api";
 import {getBankListSuccess, getBankListFail} from "../actions/bankListActions";
 import {BANK_LIST_START} from "../constants/constants";
+import {ShowNotification} from "../../containers/ShowNotification";
 
 export function* getBankList({payload}) {
     try {
@@ -10,8 +11,13 @@ export function* getBankList({payload}) {
         });
         // console.log(response.data);
         yield put(getBankListSuccess(response.data));
-    } catch (e) {
-        yield put(getBankListFail(e.response));
+    } catch (error) {
+        ShowNotification(
+            "error",
+            `${error.response.statusText}`,
+            `${error.response.data.error}`
+        );
+        yield put(getBankListFail(error.response));
     }
 }
 

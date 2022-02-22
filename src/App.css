@@ -30,3 +30,6 @@ body{
 .ant-modal-footer{
   justify-content: end;
 }
+.ant-popover-buttons{
+  display: flex;
+}

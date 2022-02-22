@@ -107,7 +107,7 @@ const Login = () => {
                                         <div className="text-danger float-end">password is required</div>}
                                     </div>
                                     <div className="mt-2">
-                                        <div className="text-end mt-5">
+                                        <div className="d-flex justify-content-end mt-5">
                                             <Button type="primary" htmlType="submit" loading={loading} className="text-uppercase">Login</Button>
                                         </div>
                                     </div>
