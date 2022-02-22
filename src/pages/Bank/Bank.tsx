@@ -8,31 +8,30 @@ import {useDispatch, useSelector} from "react-redux";
 import {getBankListStartAct, setFilterParams} from "../../services/actions/bankListActions";
 import {Button, Input, Pagination} from 'antd';
 import {DoubleLeftOutlined, FileAddOutlined} from "@ant-design/icons/lib";
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
+import {AppDispatch, RootState} from "../../services/store";
 
 const {Search} = Input;
 
 const Bank = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const history = useHistory();
 
-    let bankListParams = useSelector((state: any) => state.bankList.paramsData);
-    let bankListFromApi = useSelector((state: any) => state.bankList.bankListSuccessData);
+    let bankListParams = useSelector((state: RootState) => state.bankList.paramsData);
+    let bankListFromApi = useSelector((state: RootState) => state.bankList.bankListSuccessData);
 
     let listBanks = bankListFromApi?.rows;
     let count: number = bankListFromApi?.total || 10;
 
-    useEffect(() => {
-        dispatch(getBankListStartAct(bankListParams));
-    }, [dispatch, bankListParams]);
+    // useEffect(() => {
+    //     dispatch(getBankListStartAct(bankListParams));
+    // }, [dispatch, bankListParams]);
 
-    const onSearch = (value: string) => {
+    const onSearch = (Search: string) => {
         // console.log(value)
         dispatch(setFilterParams({
-            Search: value,
-            PageNumber: 1,
-            PageLimit: 10,
+            Search: Search,
         }))
     };
 
@@ -60,11 +59,12 @@ const Bank = () => {
                                 loading={false}
                                 enterButton
                                 className="me-2"
+                                value={bankListParams?.Search}
                             />
                             <Button
-                                onClick={()=> history.push("bank/add")}
+                                onClick={() => history.push("bank/add")}
                                 type="primary" htmlType="submit" loading={false}
-                                className="text-uppercase" icon={<FileAddOutlined />}
+                                className="text-uppercase" icon={<FileAddOutlined/>}
                             >
                                 Add new
                             </Button>

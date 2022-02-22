@@ -4,6 +4,7 @@ import SuccessContainer from "./containers/SuccesContainer";
 import {Switch, Route, useHistory} from "react-router-dom";
 import ProtectedRoute from './routes/components/ProtectedRoute';
 import api from './services/api/api';
+import {useDispatch} from "react-redux";
 
 const loading = (
     <SuccessContainer/>

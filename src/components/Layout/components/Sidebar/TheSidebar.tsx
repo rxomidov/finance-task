@@ -1,18 +1,40 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Layout, Menu} from "antd";
 import {
      PieChartOutlined, FileOutlined, TeamOutlined, UserOutlined,
 } from '@ant-design/icons';
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {BankOutlined} from "@ant-design/icons/lib";
 import logoMini from "../../../../assets/logoMini.png";
 import logo from "../../../../assets/logo.png";
 import styled from "styled-components";
+import {useDispatch, useSelector} from "react-redux";
+import {getBankListStartAct, setFilterParams} from "../../../../services/actions/bankListActions";
 
 const {SubMenu} = Menu;
 const {Sider} = Layout;
 
 const TheSidebar = ({collapsed, onCollapse}: any) => {
+
+    const dispatch = useDispatch();
+    const location = useLocation();
+
+    let bankListParams = useSelector((state: any) => state.bankList.paramsData);
+    useEffect(() => {
+        if (location.pathname === "/bank") {
+            dispatch(getBankListStartAct(bankListParams));
+        }
+    }, [dispatch, bankListParams]);
+    const getBank = () => {
+        dispatch(setFilterParams({
+            PageNumber: 1,
+            PageLimit: 10,
+            // Search: null,
+            // SortColumn: null,
+            // OrderType: null,
+        }))
+    };
+
     return (
         <Wrapper style={{backgroundColor: "#001529"}}>
             <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
@@ -29,7 +51,7 @@ const TheSidebar = ({collapsed, onCollapse}: any) => {
                             Dashboard
                         </Link>
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<BankOutlined/>}>
+                    <Menu.Item key="2" icon={<BankOutlined/>} onClick={getBank}>
                         <Link to="/bank">
                             Bank
                         </Link>

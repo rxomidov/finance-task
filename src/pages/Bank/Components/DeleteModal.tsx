@@ -38,7 +38,7 @@ const DeleteModal:React.FC<DeleteModal> = ({id }) => {
                 ShowNotification(
                     "success",
                     `${response.statusText}`,
-                    `Successfully updated`
+                    `Successfully deleted`
                 );
                 dispatch(getBankListStartAct({
                     PageNumber: 1,

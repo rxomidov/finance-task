@@ -14,6 +14,8 @@ import * as yup from "yup";
 import axios from "axios";
 import URL from "../../services/api/config";
 import {ShowNotification} from "../../containers/ShowNotification";
+import {getBankListStartAct} from "../../services/actions/bankListActions";
+import {AppDispatch, RootState} from "../../services/store";
 
 const {Option} = Select;
 
@@ -23,21 +25,30 @@ const schema = yup.object().shape({
     stateid: yup.string().required().default("This field is required!"),
 });
 
+interface IStateList {
+    id: number,
+    name: string,
+}
+
+type BankParams = {
+    id: string;
+};
+
 const BankInfo: React.FC = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const history = useHistory();
 
-    const {id} = useParams<any>();
+    const {id} = useParams<BankParams>();
 
     useEffect(() => {
         dispatch(getBankInfoStartAct({id}));
     }, []);
 
-    let currentBank = useSelector((state: any) => state.bankInfo?.bankInfoSuccessData);
-    let loading = useSelector((state: any) => state.bankInfo?.bankInfoBegin);
-    let fail = useSelector((state: any) => state.bankInfo?.bankInfoFail);
-    let failData = useSelector((state: any) => state.bankInfo?.bankInfoFailData);
+    let currentBank = useSelector((state: RootState) => state.bankInfo?.bankInfoSuccessData);
+    let loading = useSelector((state: RootState) => state.bankInfo?.bankInfoBegin);
+    let fail = useSelector((state: RootState) => state.bankInfo?.bankInfoFail);
+    let failData = useSelector((state: RootState) => state.bankInfo?.bankInfoFailData);
     // console.log(currentBank)
 
     const methods = useForm({
@@ -73,6 +84,10 @@ const BankInfo: React.FC = () => {
                     `${response.statusText}`,
                     `Successfully updated`
                 );
+                dispatch(getBankListStartAct({
+                    PageNumber: 1,
+                    PageLimit: 10,
+                }));
                 history.goBack();
                 resetForm();
             }).catch(error => {
@@ -215,7 +230,7 @@ const BankInfo: React.FC = () => {
                                                         onChange={onChange} onBlur={onBlur} value={value}
                                                         placeholder="Select faculty" style={{width: "100%"}}
                                                     >
-                                                        {stateList?.map((state: any) => {
+                                                        {stateList?.map((state: IStateList) => {
                                                             return (
                                                                 <Option key={state.id}
                                                                         value={state.id}>{state.name}</Option>

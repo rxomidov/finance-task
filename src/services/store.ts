@@ -10,11 +10,14 @@ const middlewares = [sagaMiddleware];
 
 const initialState = {
 
-}
+};
 
 const store = createStore(
     rootReducer,
     composeWithDevTools(applyMiddleware(...middlewares))
 );
+
+export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>
 export default store;
 sagaMiddleware.run(rootSaga);

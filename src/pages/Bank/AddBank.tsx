@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PageHeader from "../../components/PageHeader/PageHeader";
 import {Button, Input, Select} from "antd";
-import {DoubleLeftOutlined, ReloadOutlined, SaveOutlined} from "@ant-design/icons/lib";
-import SuccessContainer from "../../containers/SuccesContainer";
+import {DoubleLeftOutlined, SaveOutlined} from "@ant-design/icons/lib";
 import {Controller, useForm} from "react-hook-form";
-import ErrorContainer from "../../containers/ErrorContainer";
-import {getBankInfoStartAct} from "../../services/actions/bankInfoActions";
 import {PageWrapper} from "../../containers/StyledContainers";
 import {useDispatch} from "react-redux";
 import {useHistory} from "react-router";
@@ -14,6 +11,8 @@ import * as yup from "yup";
 import axios from "axios";
 import URL from "../../services/api/config";
 import {ShowNotification} from "../../containers/ShowNotification";
+import {getBankListStartAct} from "../../services/actions/bankListActions";
+import {finished} from "stream";
 
 const {Option} = Select;
 
@@ -22,6 +21,11 @@ const schema = yup.object().shape({
     bankname: yup.string().required().default("This field is required!"),
     stateid: yup.string().required().default("This field is required!"),
 });
+
+interface IStateList {
+    id: number,
+    name: string,
+}
 
 const AddBank: React.FC = () => {
 
@@ -53,6 +57,10 @@ const AddBank: React.FC = () => {
                     `${response.statusText}`,
                     `Successfully added`
                 );
+                dispatch(getBankListStartAct({
+                    PageNumber: 1,
+                    PageLimit: 10,
+                }));
                 history.goBack();
                 resetForm();
             }).catch(error => {
@@ -64,7 +72,7 @@ const AddBank: React.FC = () => {
                 `${error.response.data.error}`
             );
         });
-    }
+    };
 
     const resetForm = () => {
         reset({
@@ -188,7 +196,7 @@ const AddBank: React.FC = () => {
                                             onChange={onChange} onBlur={onBlur} value={value}
                                             placeholder="Select faculty" style={{width: "100%"}}
                                         >
-                                            {stateList?.map((state: any) => {
+                                            {stateList?.map((state: IStateList) => {
                                                 return (
                                                     <Option key={state.id}
                                                             value={state.id}>{state.name}</Option>

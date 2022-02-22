@@ -10,6 +10,7 @@ import {EyeInvisibleOutlined, EyeTwoTone} from "@ant-design/icons/lib";
 import bgImg from "../../assets/finance-bg.jpg"
 import {loginStart} from "../../services/actions/loginActions";
 import logo from "../../assets/logoMini.png";
+import {AppDispatch, RootState} from "../../services/store";
 
 const schema = yup.object().shape({
     username: yup.string().required().default("This field is required!"),
@@ -18,7 +19,7 @@ const schema = yup.object().shape({
 
 const Login = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const history = useHistory();
 
     const methods = useForm({
@@ -41,8 +42,8 @@ const Login = () => {
     };
 
     let token = localStorage.getItem("token");
-    const loginState = useSelector((state: any) => state.login.loginSuccess);
-    const loading = useSelector((state: any) => state.login.loginBegin);
+    const loginState = useSelector((state: RootState) => state.login.loginSuccess);
+    const loading = useSelector((state: RootState) => state.login.loginBegin);
 
     useEffect(() => {
         if (token || loginState) {

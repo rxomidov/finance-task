@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import {Link, useHistory} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Link, useHistory, useLocation} from 'react-router-dom';
 import {ListWrapper} from "../../../containers/StyledContainers";
 import {
     EditIcon,
     FilterDownIcon,
     FilterIcon,
-    FilterUpIcon, TrashIcon,
+    FilterUpIcon,
 } from "../../../utils/svgIcons";
 import {useDispatch, useSelector} from "react-redux";
 import EmptyList from "../../../containers/EmptyList";
@@ -15,29 +15,40 @@ import ErrorContainer from "../../../containers/ErrorContainer";
 import {ReloadOutlined} from '@ant-design/icons';
 import DeleteModal from "./DeleteModal";
 import {setFilterParams} from "../../../services/actions/bankListActions";
+import {AppDispatch, RootState} from "../../../services/store";
 
 interface ListBanks {
     listBanks: {
-        id: string,
-        sender_name: string,
+        id: number,
+        code: string,
+        bankname: string,
+        status: string,
     }[],
     count: number,
+}
+
+interface Status {
+    status: string
+}
+
+interface Direction {
+    direction: string | null
 }
 
 const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
 
     const history = useHistory();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
-    const loading = useSelector((state: any) => state.bankList?.bankListBegin);
-    let fail = useSelector((state: any) => state.bankList.bankListFail);
-    const bankListFailData = useSelector((state: any) => state.bankList?.bankListFailData);
+    const loading = useSelector((state: RootState) => state.bankList?.bankListBegin);
+    let fail = useSelector((state: RootState) => state.bankList.bankListFail);
+    const bankListFailData = useSelector((state: RootState) => state.bankList?.bankListFailData);
 
-    const [directionId, setDirectionId] = useState<any>(null);
-    const [directionCode, setDirectionCode] = useState<any>(null);
-    const [directionName, setDirectionName] = useState<any>(null);
+    const [directionId, setDirectionId] = useState<string | null>(null);
+    const [directionCode, setDirectionCode] = useState<string | null>(null);
+    const [directionName, setDirectionName] = useState<string | null>(null);
 
-    const Status = ({status}: any) => {
+    const Status = ({status}: Status) => {
         return (
             <div className={`name status`}>
                 <div className={`status-inner ${status}`}>
@@ -47,7 +58,7 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
         )
     };
 
-    const SortArrow = ({direction}: any) => {
+    const SortArrow = ({direction}: Direction) => {
         if (!direction) {
             return <span className="heading_arrow">
                     <FilterIcon fill="#3699ff"/>
@@ -72,6 +83,8 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
     };
 
     const switchDirectionId = () => {
+        setDirectionCode(null);
+        setDirectionName(null);
         if (!directionId) {
             setDirectionId("desc");
         } else if (directionId === "desc") {
@@ -81,6 +94,8 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
         }
     };
     const switchDirectionCode = () => {
+        setDirectionId(null);
+        setDirectionName(null);
         if (!directionCode) {
             setDirectionCode("desc");
         } else if (directionCode === "desc") {
@@ -90,6 +105,8 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
         }
     };
     const switchDirectionName = () => {
+        setDirectionId(null);
+        setDirectionCode(null);
         if (!directionName) {
             setDirectionName("desc");
         } else if (directionName === "desc") {
@@ -99,22 +116,20 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
         }
     };
 
-    const setValueAndDirection = (value: any) => {
+    const setValueAndDirection = (value: string) => {
         if (value === "id") {
             switchDirectionId();
             dispatch(setFilterParams({
                 OrderType: directionId,
                 SortColumn: value,
             }));
-        }
-        else if (value === "code") {
+        } else if (value === "code") {
             switchDirectionCode();
             dispatch(setFilterParams({
                 OrderType: directionCode,
                 SortColumn: value,
             }));
-        }
-        else if (value === "bankname") {
+        } else if (value === "bankname") {
             switchDirectionName();
             dispatch(setFilterParams({
                 OrderType: directionName,
@@ -123,8 +138,7 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
         }
     };
 
-    const toggleInfo = (id: number, result?: number) => {
-        // dispatch(getArticlesInfoStartAct({id, result}));
+    const toggleInfo = (id: number) => {
         history.push({
             pathname: `/bank/${id}`,
             state: "Bank information",
@@ -171,7 +185,7 @@ const ListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
                         <SuccessContainer/>
                     ) : (
                         <>
-                            {listBanks?.map((list: any, idx: number) => {
+                            {listBanks?.map((list, idx: number) => {
                                 return (
                                     <div key={idx} className="row-parent">
                                         <div className="row gx-0">

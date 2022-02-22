@@ -48,7 +48,7 @@ const bankListReducer = (state = initialState, action) => {
                     PageLimit: action.payload.PageLimit ? action.payload.PageLimit : state.paramsData.PageLimit,
                     OrderType: action.payload.OrderType ? action.payload.OrderType : state.paramsData.OrderType,
                     SortColumn: action.payload.SortColumn ? action.payload.SortColumn : state.paramsData.SortColumn,
-                    Search: action.payload.Search? action.payload.Search: state.paramsData.Search,
+                    Search: action.payload.Search,
                 },
                 helpersData: {
                     filter: action.payload.filter,
