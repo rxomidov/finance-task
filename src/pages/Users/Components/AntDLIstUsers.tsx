@@ -10,9 +10,11 @@ import {EditIcon, TrashIcon} from "../../../utils/svgIcons";
 import {getBankListStartAct, setFilterParams} from "../../../services/actions/bankListActions";
 import URL from "../../../services/api/config";
 import {ShowNotification} from "../../../containers/ShowNotification";
+import { IdcardTwoTone } from "@ant-design/icons";
+import RoleModal from './RoleModal';
 
-interface ListBanks {
-    listBanks: {
+interface ListUsers {
+    listUsers: {
         id: number,
         code: string,
         bankname: string,
@@ -21,7 +23,7 @@ interface ListBanks {
     count: number,
 }
 
-const AntDListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
+const AntDListUsers: React.FC<ListUsers> = ({listUsers, count}) => {
 
     const history = useHistory();
     const dispatch = useDispatch<AppDispatch>();
@@ -56,40 +58,49 @@ const AntDListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
             },
         },
         {
-            title: 'Code',
-            dataIndex: 'Code',
+            title: 'Name',
+            dataIndex: 'DisplayName',
             sorter: {
                 compare: (a: any, b: any) => a.code - b.code,
                 multiple: 3,
             },
         },
         {
-            title: 'Name',
-            dataIndex: 'Name',
+            title: 'Organization',
+            dataIndex: 'Organization',
             sorter: {
                 compare: (a: any, b: any) => a.bankname - b.bankname,
                 multiple: 2,
             },
         },
-        // {
-        //     title: 'Status',
-        //     dataIndex: 'status',
-        //     render: (_: any, record: { status: string }) => {
-        //         return (
-        //             <Tag
-        //                 color={`${record.status === "Актив" ? "green" : "red"}`}
-        //             >
-        //                 {record.status}
-        //             </Tag>
-        //         )
-        //     }
-        // },
+        {
+            title: 'INN',
+            dataIndex: 'INN',
+            sorter: {
+                compare: (a: any, b: any) => a.bankname - b.bankname,
+                multiple: 2,
+            },
+        },
+        {
+            title: 'Status',
+            dataIndex: 'State',
+            render: (_: any, record: { State: string }) => {
+                return (
+                    <Tag
+                        color={`${record.State === "Актив" ? "green" : "red"}`}
+                    >
+                        {record.State}
+                    </Tag>
+                )
+            }
+        },
         {
             title: 'Actions',
             dataIndex: 'actions',
             render: (_: any, record: { id: number }) => {
                 return (
                     <div className="d-flex">
+                        <RoleModal/>
                         <Button
                             className="me-2"
                             icon={<EditIcon fill={"dodgerblue"}/>}
@@ -159,7 +170,7 @@ const AntDListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
                         onChange: (page, pageSize) => handlePagination(page, pageSize)
                     }}
                     columns={columns}
-                    dataSource={listBanks}
+                    dataSource={listUsers}
                     loading={loading}
                     onChange={onChange}
                 />
@@ -168,4 +179,4 @@ const AntDListBanks: React.FC<ListBanks> = ({listBanks, count}) => {
     );
 };
 
-export default React.memo(AntDListBanks);
+export default React.memo(AntDListUsers);

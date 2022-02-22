@@ -1,3 +1,3 @@
-const URL = "http://templ-api.webase.uz/";
+const URL = "https://apistest.uzasbo.uz/";
 
 export default URL;

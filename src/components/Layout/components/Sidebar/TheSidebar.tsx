@@ -10,6 +10,8 @@ import logo from "../../../../assets/logo.png";
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import {getBankListStartAct, setFilterParams} from "../../../../services/actions/bankListActions";
+import { setUserListFilterParams } from '../../../../services/actions/userListActions';
+import { getUserListStartAct } from "./../../../../services/actions/userListActions";
 
 const {SubMenu} = Menu;
 const {Sider} = Layout;
@@ -20,18 +22,31 @@ const TheSidebar = ({collapsed, onCollapse}: any) => {
     const location = useLocation();
 
     let bankListParams = useSelector((state: any) => state.bankList.paramsData);
+    let userListParams = useSelector((state: any) => state.userList.paramsData);
+
     useEffect(() => {
         if (location.pathname === "/bank") {
             dispatch(getBankListStartAct(bankListParams));
         }
     }, [dispatch, bankListParams]);
+
+    useEffect(() => {
+        if (location.pathname === "/users") {
+            dispatch(getUserListStartAct(userListParams));
+        }
+    }, [dispatch, userListParams]);
+
     const getBank = () => {
         dispatch(setFilterParams({
             PageNumber: 1,
             PageLimit: 10,
-            // Search: null,
-            // SortColumn: null,
-            // OrderType: null,
+        }))
+    };
+
+    const getUsers = () => {
+        dispatch(setUserListFilterParams({
+            PageNumber: 1,
+            PageLimit: 10,
         }))
     };
 
@@ -56,6 +71,12 @@ const TheSidebar = ({collapsed, onCollapse}: any) => {
                             Bank
                         </Link>
                     </Menu.Item>
+                    <Menu.Item key="10" icon={<TeamOutlined/>} onClick={getUsers}>
+                        <Link to="/users">
+                            Users
+                        </Link>
+                    </Menu.Item>
+
                     <SubMenu key="sub1" icon={<UserOutlined/>} title="User">
                         <Menu.Item key="3">Tom</Menu.Item>
                         <Menu.Item key="4">Bill</Menu.Item>

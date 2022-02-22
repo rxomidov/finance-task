@@ -1,14 +1,15 @@
 import React, {useEffect} from 'react';
-import PageHeader from "../../components/PageHeader/PageHeader";
+import {useDispatch, useSelector} from "react-redux";
 import {motion} from "framer-motion";
+import {useHistory} from 'react-router-dom';
+import {Button, Input, Pagination} from 'antd';
+
+import PageHeader from "../../components/PageHeader/PageHeader";
 import {variants} from "../../utils/motions";
 import {PageWrapper} from "../../containers/StyledContainers";
 import ListBanks from "./Components/ListBanks";
-import {useDispatch, useSelector} from "react-redux";
 import {getBankListStartAct, setFilterParams} from "../../services/actions/bankListActions";
-import {Button, Input, Pagination} from 'antd';
 import {DoubleLeftOutlined, FileAddOutlined} from "@ant-design/icons/lib";
-import {useHistory} from 'react-router-dom';
 import {AppDispatch, RootState} from "../../services/store";
 import AntDListBanks from "./Components/AntDLIstBanks";
 
