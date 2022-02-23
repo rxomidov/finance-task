@@ -47,12 +47,12 @@ const Users = () => {
             <div className="page-header">
                 <PageHeader
                     header="Users list"
-                    subheader="Sorting & pagination remote datasource"
+                    subheader="Sorting & pagination"
                 />
                 <div className="page-buttons">
                     <div className="d-flex">
                         <div className="d-none d-sm-flex">
-                            <Select defaultValue="ID" style={{ width: "120px" }} onChange={handleChange}>
+                            <Select defaultValue="ID" style={{ width: "240px" }} onChange={handleChange}>
                                 <Option value="ID">ID</Option>
                                 <Option value="UserName">UserName</Option>
                                 <Option value="FIO">FIO</Option>

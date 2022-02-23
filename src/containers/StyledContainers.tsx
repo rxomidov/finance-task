@@ -9,7 +9,7 @@ export const PageWrapper = styled.div`
   transition: var(--main-transition);
   
   .ant-select-selector{
-    border-radius: 8px!important;
+    min-width: 120px;
   }
   .ant-pagination-item{
     border-radius: 8px;
