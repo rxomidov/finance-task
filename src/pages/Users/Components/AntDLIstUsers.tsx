@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {useHistory, useLocation} from 'react-router-dom';
+import React from 'react';
+import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Popconfirm, Table, Tag} from 'antd';
+import { DeleteTwoTone, EditTwoTone } from "@ant-design/icons";
 import axios from "axios";
 
 import {ListWrapper} from "../../../containers/StyledContainers";
 import {AppDispatch, RootState} from "../../../services/store";
-import {EditIcon, TrashIcon} from "../../../utils/svgIcons";
 import {getBankListStartAct, setFilterParams} from "../../../services/actions/bankListActions";
 import URL from "../../../services/api/config";
 import {ShowNotification} from "../../../containers/ShowNotification";
-import { IdcardTwoTone } from "@ant-design/icons";
-import RoleModal from './RoleModal';
+import RoleModal from './RoleModal/RoleModal';
+import { setUserListFilterParams } from '../../../services/actions/userListActions';
 
 interface ListUsers {
     listUsers: {
@@ -28,9 +28,7 @@ const AntDListUsers: React.FC<ListUsers> = ({listUsers, count}) => {
     const history = useHistory();
     const dispatch = useDispatch<AppDispatch>();
 
-    const loading = useSelector((state: RootState) => state.bankList?.bankListBegin);
-    let fail = useSelector((state: RootState) => state.bankList.bankListFail);
-    const bankListFailData = useSelector((state: RootState) => state.bankList?.bankListFailData);
+    const loading = useSelector((state: RootState) => state.userList?.userListBegin);
 
     function onChange(pagination: any, filters: any, sorter: any, extra: any) {
         // console.log('params', pagination, filters, sorter, extra);
@@ -44,16 +42,18 @@ const AntDListUsers: React.FC<ListUsers> = ({listUsers, count}) => {
 
     const toggleInfo = (id: number) => {
         history.push({
-            pathname: `/bank/${id}`,
-            state: "Bank information",
+            pathname: `/user/${id}`,
+            state: "User information",
         })
     };
+
+
     const columns: any = [
         {
             title: 'ID',
             dataIndex: 'ID',
             sorter: {
-                compare: (a: any, b: any) => a.id - b.id,
+                compare: (a: any, b: any) => a.ID - b.ID,
                 multiple: 3,
             },
         },
@@ -61,7 +61,7 @@ const AntDListUsers: React.FC<ListUsers> = ({listUsers, count}) => {
             title: 'Name',
             dataIndex: 'DisplayName',
             sorter: {
-                compare: (a: any, b: any) => a.code - b.code,
+                compare: (a: any, b: any) => a.DisplayName - b.DisplayName,
                 multiple: 3,
             },
         },
@@ -69,7 +69,7 @@ const AntDListUsers: React.FC<ListUsers> = ({listUsers, count}) => {
             title: 'Organization',
             dataIndex: 'Organization',
             sorter: {
-                compare: (a: any, b: any) => a.bankname - b.bankname,
+                compare: (a: any, b: any) => a.Organization - b.Organization,
                 multiple: 2,
             },
         },
@@ -77,7 +77,7 @@ const AntDListUsers: React.FC<ListUsers> = ({listUsers, count}) => {
             title: 'INN',
             dataIndex: 'INN',
             sorter: {
-                compare: (a: any, b: any) => a.bankname - b.bankname,
+                compare: (a: any, b: any) => a.INN - b.INN,
                 multiple: 2,
             },
         },
@@ -97,19 +97,19 @@ const AntDListUsers: React.FC<ListUsers> = ({listUsers, count}) => {
         {
             title: 'Actions',
             dataIndex: 'actions',
-            render: (_: any, record: { id: number }) => {
+            render: (_: any, record: { ID: number }) => {
                 return (
                     <div className="d-flex">
-                        <RoleModal/>
+                        <RoleModal id={record.ID}/>
                         <Button
                             className="me-2"
-                            icon={<EditIcon fill={"dodgerblue"}/>}
-                            onClick={() => toggleInfo(record.id)}
+                            icon={<EditTwoTone />}
+                            onClick={() => toggleInfo(record.ID)}
                         />
-                        <Popconfirm title="Sure to delete?" onConfirm={()=>handleDelete(record.id)}>
+                        <Popconfirm title="Sure to delete?" onConfirm={()=>handleDelete(record.ID)}>
                             <Button
                                 className="danger"
-                                icon={<TrashIcon fill={"rgba(255,0,0,0.6)"}/>}
+                                icon={<DeleteTwoTone />}
                             />
                         </Popconfirm>
                     </div>
@@ -120,7 +120,7 @@ const AntDListUsers: React.FC<ListUsers> = ({listUsers, count}) => {
 
     const handlePagination = (page: number, pageSize: number) => {
         // console.log(page, pageSize)
-        dispatch(setFilterParams({
+        dispatch(setUserListFilterParams({
             PageNumber: page,
             PageLimit: pageSize,
         }))
