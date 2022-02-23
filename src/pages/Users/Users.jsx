@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Input } from "antd";
+import { Button, Input, Select } from "antd";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FileAddOutlined } from "@ant-design/icons/lib";
@@ -13,6 +13,7 @@ import { variants } from "../../utils/motions";
 import AntDLIstUsers from "./Components/AntDLIstUsers";
 
 const { Search } = Input;
+const { Option } = Select;
 
 const Users = () => {
     const dispatch = useDispatch();
@@ -27,6 +28,10 @@ const Users = () => {
 
     let listUsers = bankListFromApi?.rows;
     let count = bankListFromApi?.total || 10;
+
+    function handleChange(value) {
+        console.log(`selected ${value}`);
+      }
 
     const onSearch = (Search) => {
         // console.log(value)
@@ -47,6 +52,14 @@ const Users = () => {
                 <div className="page-buttons">
                     <div className="d-flex">
                         <div className="d-none d-sm-flex">
+                            <Select defaultValue="ID" style={{ width: "120px" }} onChange={handleChange}>
+                                <Option value="ID">ID</Option>
+                                <Option value="UserName">UserName</Option>
+                                <Option value="FIO">FIO</Option>
+                                <Option value="OrganizationName">Organization Name</Option>
+                                <Option value="OrganizationId">Organization Id</Option>
+                                <Option value="INN">INN</Option> 
+                            </Select>
                             <Search
                                 onSearch={onSearch}
                                 placeholder="Search user..."

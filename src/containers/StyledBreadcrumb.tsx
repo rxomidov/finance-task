@@ -8,6 +8,8 @@ const breadcrumbNameMap: any = {
     '/bank': 'Bank list',
     '/bank/add': 'Add bank',
     '/bank/:id': 'Update bank',
+    '/user': 'Users',
+    '/user/:id': 'Update user',
 };
 
 const StyledBreadcrumb = () => {

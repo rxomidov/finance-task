@@ -7,6 +7,7 @@ const BankInfo = React.lazy(() => import('../pages/Bank/BankInfo'));
 const AddBank = React.lazy(() => import('../pages/Bank/AddBank'));
 
 const Users = React.lazy(() => import('../pages/Users/Users'));
+const UserInfo = React.lazy(() => import('../pages/Users/UserInfo'));
 
 
 const routes = [
@@ -18,6 +19,7 @@ const routes = [
     {path: '/bank/:id', exact: false, name: "Bank info", component: BankInfo},
 
     {path: '/users', exact: true, name: "Users", component: Users},
+    {path: '/users/:id', exact: true, name: "Users", component: UserInfo},
 ];
 
 export default routes;

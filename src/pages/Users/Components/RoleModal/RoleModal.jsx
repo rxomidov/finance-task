@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Col, Input, Modal, Row, Table, Tag } from "antd";
 import { ArrowLeftOutlined, ArrowRightOutlined, CarryOutTwoTone } from '@ant-design/icons';
-import { useEffect } from "react";
 import axios from 'axios';
 
 import URL from '../../../../services/api/config';
@@ -166,8 +165,7 @@ function RoleModal({ id }) {
                     // console.log(selectedModels); 
                     if (selectedModels.ID === roleModels.ID) {
                         console.log("true");
-                        roleModels.Check = true;
-                        return null;
+                        return roleModels.Check = true;
                     }
                 })
             )

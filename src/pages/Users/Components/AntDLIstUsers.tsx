@@ -42,7 +42,7 @@ const AntDListUsers: React.FC<ListUsers> = ({listUsers, count}) => {
 
     const toggleInfo = (id: number) => {
         history.push({
-            pathname: `/user/${id}`,
+            pathname: `/users/${id}`,
             state: "User information",
         })
     };
