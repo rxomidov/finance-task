@@ -10,7 +10,7 @@ import logo from "../../../../assets/logo.png";
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import {getBankListStartAct, setFilterParams} from "../../../../services/actions/bankListActions";
-import { setUserListFilterParams } from '../../../../services/actions/userListActions';
+import { setUserListPagination } from '../../../../services/actions/userListActions';
 import { getUserListStartAct } from "./../../../../services/actions/userListActions";
 
 const {SubMenu} = Menu;
@@ -22,7 +22,7 @@ const TheSidebar = ({collapsed, onCollapse}: any) => {
     const location = useLocation();
 
     let bankListParams = useSelector((state: any) => state.bankList.paramsData);
-    let userListParams = useSelector((state: any) => state.userList.paramsData);
+    let userListPagination = useSelector((state: any) => state.userList.paginationData);
 
     useEffect(() => {
         if (location.pathname === "/bank") {
@@ -32,9 +32,9 @@ const TheSidebar = ({collapsed, onCollapse}: any) => {
 
     useEffect(() => {
         if (location.pathname === "/users") {
-            dispatch(getUserListStartAct(userListParams));
+            dispatch(getUserListStartAct(userListPagination));
         }
-    }, [dispatch, userListParams]);
+    }, [dispatch, userListPagination]);
 
     const getBank = () => {
         dispatch(setFilterParams({
@@ -44,7 +44,7 @@ const TheSidebar = ({collapsed, onCollapse}: any) => {
     };
 
     const getUsers = () => {
-        dispatch(setUserListFilterParams({
+        dispatch(setUserListPagination({
             PageNumber: 1,
             PageLimit: 10,
         }))

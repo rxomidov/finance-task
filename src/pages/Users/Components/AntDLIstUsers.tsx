@@ -11,7 +11,7 @@ import {getBankListStartAct, setFilterParams} from "../../../services/actions/ba
 import URL from "../../../services/api/config";
 import {ShowNotification} from "../../../containers/ShowNotification";
 import RoleModal from './RoleModal/RoleModal';
-import { setUserListFilterParams } from '../../../services/actions/userListActions';
+import { setUserListPagination } from '../../../services/actions/userListActions';
 
 interface ListUsers {
     listUsers: {
@@ -29,6 +29,7 @@ const AntDListUsers: React.FC<ListUsers> = ({listUsers, count}) => {
     const dispatch = useDispatch<AppDispatch>();
 
     const loading = useSelector((state: RootState) => state.userList?.userListBegin);
+    const paramsData = useSelector((state: RootState) => state.userList?.paginationData);
 
     function onChange(pagination: any, filters: any, sorter: any, extra: any) {
         // console.log('params', pagination, filters, sorter, extra);
@@ -120,17 +121,16 @@ const AntDListUsers: React.FC<ListUsers> = ({listUsers, count}) => {
 
     const handlePagination = (page: number, pageSize: number) => {
         // console.log(page, pageSize)
-        dispatch(setUserListFilterParams({
-            PageNumber: page,
-            PageLimit: pageSize,
-        }))
+        paramsData.PageNumber = page;
+        paramsData.PageLimit = pageSize;
+        dispatch(setUserListPagination(paramsData))
     };
 
     const handleDelete = (id: any) => {
         // setDeleteLoading(true);
         let token = localStorage.getItem("token");
 
-        axios.delete(`${URL}Bank/Delete?id=${id}`,{
+        axios.delete(`${URL}User/Delete?id=${id}`,{
             headers: {
                 Authorization: "Bearer " + token,
             }
@@ -166,13 +166,15 @@ const AntDListUsers: React.FC<ListUsers> = ({listUsers, count}) => {
                     pagination={{
                         defaultPageSize: 10,
                         total: count,
+                        defaultCurrent: paramsData.PageNumber,
                         showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
-                        onChange: (page, pageSize) => handlePagination(page, pageSize)
+                        onChange: (page, pageSize) => handlePagination(page, pageSize),
                     }}
                     columns={columns}
                     dataSource={listUsers}
                     loading={loading}
                     onChange={onChange}
+                    // rowKey={record => record.id}
                 />
             </div>
         </ListWrapper>

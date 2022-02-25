@@ -2,7 +2,8 @@ import {
   USER_LIST_START,
   USER_LIST_SUCCESS,
   USER_LIST_FAIL,
-  USER_LIST_PARAMS,
+  USER_LIST_PAGINATION,
+  USER_LIST_FILTER
 } from "../constants/constants";
 
 export const getUserListStartAct = (data) => {
@@ -26,9 +27,15 @@ export const getUserListFail = (data) => {
   };
 };
 
-export const setUserListFilterParams = (data) => {
+export const setUserListPagination = (data) => {
   return {
-      type: USER_LIST_PARAMS,
+      type: USER_LIST_PAGINATION,
+      payload: data,
+  };
+};
+export const setUserListFilter = (data) => {
+  return {
+      type: USER_LIST_FILTER,
       payload: data,
   };
 };

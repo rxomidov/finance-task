@@ -1,16 +1,16 @@
-import React from "react";
-import { Button, Input, Select } from "antd";
+import React, { useState, useEffect } from "react";
+import { Button, Input, Select, Space } from "antd";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { FileAddOutlined } from "@ant-design/icons/lib";
+import { FileAddOutlined, ReloadOutlined } from "@ant-design/icons/lib";
+import { motion } from "framer-motion";
 
 import PageHeader from "../../components/PageHeader/PageHeader";
 import { PageWrapper } from "../../containers/StyledContainers";
-import { setFilterParams } from "../../services/actions/bankListActions";
-import { AppDispatch, RootState } from "../../services/store";
-import { motion } from "framer-motion";
 import { variants } from "../../utils/motions";
 import AntDLIstUsers from "./Components/AntDLIstUsers";
+import { setUserListFilter } from "../../services/actions/userListActions";
+import { getBankListStartAct } from "../../services/actions/bankListActions";
 
 const { Search } = Input;
 const { Option } = Select;
@@ -19,27 +19,37 @@ const Users = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    let userListParams = useSelector(
-        (state) => state.userList.paramsData
-    );
-    let bankListFromApi = useSelector(
-        (state) => state.userList.userListSuccessData
-    );
+    let userListFilter = useSelector((state) => state.userList.filterData);
 
-    let listUsers = bankListFromApi?.rows;
-    let count = bankListFromApi?.total || 10;
+    let userListPagination = useSelector((state) => state.userList.paginationData);
+
+    let userListFromApi = useSelector((state) => state.userList.userListSuccessData);
+
+    let listUsers = userListFromApi?.rows;
+    let count = userListFromApi?.total || 10;
+
+    const [filterType, setFilterType] = useState(userListFilter.filterType);
+    const [filterValue, setFilterValue] = useState(userListFilter[`${filterType}`]);
 
     function handleChange(value) {
-        console.log(`selected ${value}`);
-      }
+        setFilterType(value);
+    }
+
+    const onSearchChange = (event) => {
+        setFilterValue(event.target.value)
+    }
 
     const onSearch = (Search) => {
-        // console.log(value)
-        dispatch(
-            setFilterParams({
-                Search: Search,
-            })
-        );
+        console.log({ [filterType]: Search });
+        userListFilter[`${filterType}`] = Search;
+        userListFilter.filterType = filterType;
+        dispatch(setUserListFilter(userListFilter));
+        dispatch(getBankListStartAct({ ...userListPagination, [filterType]: Search }));
+    };
+
+    function handleClearParams() {
+        setFilterType('');
+        setFilterValue('');
     };
 
     return (
@@ -52,32 +62,49 @@ const Users = () => {
                 <div className="page-buttons">
                     <div className="d-flex">
                         <div className="d-none d-sm-flex">
-                            <Select defaultValue="ID" style={{ width: "240px" }} onChange={handleChange}>
-                                <Option value="ID">ID</Option>
-                                <Option value="UserName">UserName</Option>
-                                <Option value="FIO">FIO</Option>
-                                <Option value="OrganizationName">Organization Name</Option>
-                                <Option value="OrganizationId">Organization Id</Option>
-                                <Option value="INN">INN</Option> 
-                            </Select>
-                            <Search
-                                onSearch={onSearch}
-                                placeholder="Search user..."
-                                loading={false}
-                                enterButton
-                                className="me-2"
-                            // defaultValue={bankListParams?.Search}
-                            />
-                            <Button
-                                onClick={() => history.push("bank/add")}
-                                type="primary"
-                                htmlType="submit"
-                                loading={false}
-                                className="text-uppercase"
-                                icon={<FileAddOutlined />}
-                            >
-                                Add new
-                            </Button>
+                            <Space>
+                                <Button
+                                    onClick={handleClearParams}
+                                    type="primary"
+                                    className="me-2"
+                                    icon={<ReloadOutlined />}
+                                >
+                                    Reset
+                                </Button>
+                                <Select
+                                    value={filterType}
+                                    placeholder="Filter type"
+                                    className="me-2"
+                                    style={{ width: "120px" }}
+                                    onChange={handleChange}
+                                >
+                                    <Option value="Id">ID</Option>
+                                    <Option value="UserName">UserName</Option>
+                                    <Option value="FIO">FIO</Option>
+                                    <Option value="OrganizationName">Organization Name</Option>
+                                    <Option value="OrganizationId">Organization Id</Option>
+                                    <Option value="INN">INN</Option>
+                                </Select>
+                                <Search
+                                    onSearch={onSearch}
+                                    onChange={onSearchChange}
+                                    placeholder="Search user..."
+                                    loading={false}
+                                    enterButton
+                                    className=""
+                                    value={filterValue}
+                                />
+                                <Button
+                                    onClick={() => history.push("user/add")}
+                                    type="primary"
+                                    htmlType="submit"
+                                    loading={false}
+                                    className="text-uppercase"
+                                    icon={<FileAddOutlined />}
+                                >
+                                    Add new
+                                </Button>
+                            </Space>
                         </div>
                     </div>
                 </div>
