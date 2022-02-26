@@ -14,6 +14,7 @@ export const getUserListStartAct = (data) => {
 };
 
 export const getUserListSuccess = (data) => {
+  console.log(data);
   return {
       type: USER_LIST_SUCCESS,
       payload: data,

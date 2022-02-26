@@ -1,7 +1,7 @@
 import {takeLatest, put, call, all} from "redux-saga/effects";
 import api from "../api/api";
-import {getUserListSuccess, getUserListFail} from "../actions/userListActions";
-import {USER_LIST_START} from "../constants/constants";
+import {getUserListSuccess, getUserListFail} from "../../pages/Users/_redux/usersSlice";
+import {usersActions} from "../constants/constants";
 import {ShowNotification} from "../../containers/ShowNotification";
 
 export function* getUserList({payload}) {
@@ -22,7 +22,7 @@ export function* getUserList({payload}) {
 }
 
 export function* getUserListStart() {
-    yield takeLatest(USER_LIST_START, getUserList);
+    yield takeLatest(usersActions.USER_LIST_START, getUserList);
 }
 
 export function* userListSagas() {

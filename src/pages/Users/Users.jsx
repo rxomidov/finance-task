@@ -10,7 +10,7 @@ import { PageWrapper } from "../../containers/StyledContainers";
 import { variants } from "../../utils/motions";
 import AntDLIstUsers from "./Components/AntDLIstUsers";
 import { setUserListFilter } from "../../services/actions/userListActions";
-import { getBankListStartAct } from "../../services/actions/bankListActions";
+import { getUserListStartAct } from "./../../services/actions/userListActions";
 
 const { Search } = Input;
 const { Option } = Select;
@@ -28,8 +28,10 @@ const Users = () => {
     let listUsers = userListFromApi?.rows;
     let count = userListFromApi?.total || 10;
 
-    const [filterType, setFilterType] = useState(userListFilter.filterType);
-    const [filterValue, setFilterValue] = useState(userListFilter[`${filterType}`]);
+    // const [filterType, setFilterType] = useState(userListFilter.filterType);
+    const [filterType, setFilterType] = useState(null);
+    // const [filterValue, setFilterValue] = useState(userListFilter[`${filterType}`]);
+    const [filterValue, setFilterValue] = useState(null);
 
     function handleChange(value) {
         setFilterType(value);
@@ -44,11 +46,15 @@ const Users = () => {
         userListFilter[`${filterType}`] = Search;
         userListFilter.filterType = filterType;
         dispatch(setUserListFilter(userListFilter));
-        dispatch(getBankListStartAct({ ...userListPagination, [filterType]: Search }));
+        dispatch(getUserListStartAct({
+            PageNumber: 1,
+            PageLimit: 10,
+            [filterType]: Search
+        }));
     };
 
     function handleClearParams() {
-        setFilterType('');
+        setFilterType(null);
         setFilterValue('');
     };
 

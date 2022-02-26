@@ -21,7 +21,8 @@ const Dashboard = () => {
 
     return (
         <PageWrapper>
-            {/*<h3>refresh token</h3>*/}
+            <h3>Redux Toolkit</h3>
+            <h3>Persistor not worked!</h3>
             {/*<h3>search issue</h3>*/}
             {/*<h3>adding typescript</h3>*/}
             {/*<h3>@reduxjs/toolkit</h3>*/}

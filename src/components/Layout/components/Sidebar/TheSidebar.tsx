@@ -10,7 +10,7 @@ import logo from "../../../../assets/logo.png";
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import {getBankListStartAct, setFilterParams} from "../../../../services/actions/bankListActions";
-import { setUserListPagination } from '../../../../services/actions/userListActions';
+import { setUserListFilter, setUserListPagination } from '../../../../services/actions/userListActions';
 import { getUserListStartAct } from "./../../../../services/actions/userListActions";
 
 const {SubMenu} = Menu;
@@ -44,10 +44,11 @@ const TheSidebar = ({collapsed, onCollapse}: any) => {
     };
 
     const getUsers = () => {
-        dispatch(setUserListPagination({
+        dispatch(getUserListStartAct({
             PageNumber: 1,
             PageLimit: 10,
         }))
+        dispatch(setUserListFilter([]))
     };
 
     return (
